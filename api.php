@@ -1,4 +1,8 @@
 <?php
+date_default_timezone_set("Asia/Bangkok"); 
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE"); // Method
+header("Access-Control-Allow-Headers: Content-Disposition, Content-Type, Content-Length, Accept-Encoding,Authorization");
+header('Content-Type: application/json'); // JSON
 
 require_once __DIR__ . '/vendor/autoload.php'; // Path to Autoload.php file
 require_once("./config/connect.php");
@@ -7,16 +11,19 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 $pass_app = $_ENV['PASS_APP_GMAIL']; // อ่านจาก Environment Server (.env) หรือจะเขียน Logic เข้ารหัส ถอดรหัสเองก็ได้
 
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    // Clent Method => POST ,BODY =>  {router : "sendmail"} 
+
     if ($req->router == 'sendmail') {
         $mail = new PHPMailer(true); // สร้าง Instance Class PHPMailer เวลาจะเข้าถึง Method ก็เรียกผ่าน $mail
-     
+
+        $desc = $req->desc ; // กรณีอยากรับค่าจาก Client
+
         try {
             //Server settings
             $mail->CharSet = "utf-8"; // Utf-8 Format
@@ -43,4 +50,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             echo json_encode(["err" => true, "msg" => "Message could not be sent. Mailer Error: {$mail->ErrorInfo}"]);
         }
     }
+} else {
+    echo json_encode(["err" => true, "msg" => "Route not provide!"]);
 }
