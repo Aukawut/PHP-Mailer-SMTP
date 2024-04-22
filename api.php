@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
             $mail->Port       = 465;                                    //TCP port -> ใช้ Port 587 ถ้ามีการตั้งค่า `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
             //Recipients
-            $mail->setFrom('aukawut2542@gmail.com', 'IT MIS');
+            $mail->setFrom('aukawut@sncformer.com', 'IT MIS');
             $mail->addAddress($email, $email);     //Add address ผู้รับ //addAddress(address, name)
             //Content
             $mail->isHTML(true); // ในกรณรต้องการเขียน Html -> True ;
